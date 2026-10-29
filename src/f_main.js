@@ -9,7 +9,7 @@ function logo(cx,y,maxW){const s1=fitSc("JIMOTHY'S",2,maxW),s2=fitSc('CROSSING',
  const bw=txtW('16-BIT')+10;g.fillStyle=OL;g.fillRect(Math.round(cx-bw/2),y,bw,11);g.fillStyle='#e0303a';g.fillRect(Math.round(cx-bw/2)+1,y+1,bw-2,9);g.fillStyle='#ff7a80';g.fillRect(Math.round(cx-bw/2)+1,y+1,bw-2,1);txt('16-BIT',cx,y+6,'#ffffff',{sh:'#7a0a10'});return y+13}
 function portrait(cx,cy,maxH,mood='happy'){const fr=SP.front[mood],k=mood=='sad'?(Math.sin(gt*1.7)>.96?1:0):(Math.sin(gt*1.7)>.96?2:Math.floor(gt*2.5)%2);const cv=fr[Math.min(k,fr.length-1)];const sc=maxH>=cv.height*2+4?2:1;
  const b=Math.round(Math.sin(gt*5));g.drawImage(cv,Math.round(cx-cv.width*sc/2),Math.round(cy-cv.height*sc/2+b),cv.width*sc,cv.height*sc);return cv.height*sc}
-function titleButtons(){const maxL=ST.get('maxL',1);const bl=[['PLAY','#2e9e5b',()=>start(1)]];if(maxL>1)bl.push(['CONTINUE LV '+maxL,'#2b6cb0',()=>start(maxL)]);bl.push(['HOW TO PLAY','#8d5bd6',showHelp]);bl.push(['HIGH SCORES','#c0702a',showScores]);bl.push(['D-PAD: '+(dpadOn?'ON':'OFF'),'#56616e',toggleDpad]);return bl}
+function titleButtons(){const maxL=ST.get('maxL',1);const bl=[['PLAY','#2e9e5b',()=>start(1)]];if(maxL>1)bl.push(['CONTINUE LV '+maxL,'#2b6cb0',()=>start(maxL)]);bl.push(['HOW TO PLAY','#8d5bd6',showHelp]);bl.push(['HIGH SCORES','#c0702a',showScores]);return bl}
 function drawTitle(){const top=HUDY+4,bot=IH-Math.ceil(SI.b)-4,bl=titleButtons(),bh=Math.max(TB,22),gap=4;const two=IW>=IH*1.15;
  if(!two){const cx=Math.round(IW/2),W=Math.min(IW-8,190);const tbx=Math.min(...TBTN.filter(b=>b.k!='pause').map(b=>b.x));let y=logo(cx,top+(tbx<cx+W/2?TB:0),W);
   const tag=wrapTxt("SEATTLE'S FAMOUS RACCOON IS WADDLING HOME!",W);if(bot-y>bl.length*(bh+gap)+60)for(const l of tag){txt(l,cx,y+5,'#ffffff',{sh:OL});y+=10}
@@ -37,12 +37,12 @@ let overAt=-9;
 function toTitle(){state='title';paused=false;G=null;pops=[];pickups=[];buildLevel(1);lt=0;chrome();playSong('title')}
 const _go=gameOver;gameOver=function(){_go();overAt=gt};
 function togglePause(){if(state!='play')return;paused=!paused;holdDir=null;swipe=null;dpadPtr=null;if(!paused)queue=[];chrome()}
-function toggleDpad(){dpadOn=!dpadOn;ST.set('dpad',dpadOn);onResize()}
+function toggleDpad(){}
 function chrome(){}
 function showScores(){try{if(window.PALB)PALB.show()}catch(e){}}
 function showHelp(){if(state=='play'&&!paused)togglePause();panelOpen=true;$('ptext').innerHTML=`<h2>Jimothy's Crossing 16-Bit</h2>
 <p>Jimothy, Seattle's famous chunky raccoon, is waddling home! Hop him across busy streets and the Sound and tuck him into all <b>5 trash-can dens</b> at the top.</p>
-<h3>Controls</h3><ul><li><b>Swipe</b> up / down / left / right to hop one space.</li><li><b>Tap</b> anywhere to hop forward.</li><li>Or use the <b>D-pad</b> (hold to keep hopping) or arrow keys / WASD.</li><li>Quick taps are remembered, so you can chain hops.</li><li>P = pause, M = sound, H = help.</li></ul>
+<h3>Controls</h3><ul><li><b>Swipe</b> up / down / left / right to hop one space.</li><li><b>Tap</b> anywhere to hop forward.</li><li>On a computer, use the arrow keys or WASD.</li><li>Quick taps are remembered, so you can chain hops.</li><li>P = pause, M = sound, H = help.</li></ul>
 <h3>Watch out</h3><ul><li>Cars, Metro buses, trucks, bikes and scooters.</li><li>Light rail: when the lights flash and the bell rings, a train is coming!</li><li>Jimothy can't swim. Ride logs, ferries and crates. Crates that wobble are about to sink!</li><li>Don't get carried off the edge of the screen.</li><li>Level 3+: a seagull on the promenade and crows that sit in the dens.</li><li>Level 4+: orcas. Ride the back, never the mouth!</li></ul>
 <h3>Points</h3><table><tr><td>Each new row forward</td><td>10</td></tr><tr><td>Reaching a den</td><td>50 + time bonus</td></tr><tr><td>Soda can / Pizza box / Trash can</td><td>20 / 50 / 100</td></tr><tr><td>Grab trash quickly in a row</td><td>combo up to x4</td></tr><tr><td>Golden can (rare)</td><td>500 + full timer</td></tr><tr><td>June bug in a den</td><td>200</td></tr><tr><td>Bring the baby raccoon home</td><td>200</td></tr><tr><td>All 5 dens filled</td><td>1000</td></tr></table>
 <p>Extra life every 10,000 points. Each level gets faster and busier, with sunsets, Seattle rain and night shifts. The whole game is free.</p>`;$('panel').style.display='flex'}
